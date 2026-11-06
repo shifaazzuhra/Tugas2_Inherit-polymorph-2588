@@ -79,3 +79,61 @@ Hasil program:
 Nilai `l3.luas()` menghasilkan 0.0 karena objek yang dibuat sebenarnya adalah Titik, walaupun tipe variabelnya Lingkaran. Java menjalankan method `luas()` milik Titik karena method tersebut sudah di-override.
 
 Menurut saya, hubungan Titik sebagai turunan Lingkaran kurang tepat jika dilihat dari relasi *is-a*, karena titik bukanlah sebuah lingkaran. Jika ada method yang menganggap semua Lingkaran memiliki luas lebih dari nol, penggunaan objek Titik bisa menyebabkan hasil perhitungan tidak sesuai dengan asumsi tersebut.
+
+
+## Soal 3 - Titik dan Garis
+
+### Prediksi Output
+
+Sebelum menjalankan program, saya memprediksi
+output baris kedua adalah:
+
+```text
+(100.0, 1.0) - (5.0, 5.0)
+```
+
+Saya memperkirakan titik awal garis ikut berubah
+karena objek Garis menggunakan referensi Titik
+yang sama dengan variabel t.
+
+
+### Hasil Pengujian dan Analisis
+
+Sebelum menggunakan defensive copy, output baris kedua adalah:
+
+```text
+(100.0, 1.0) - (5.0, 5.0)
+```
+
+Hasil ini sesuai dengan prediksi saya. Titik awal berubah
+karena objek Garis dan variabel t menggunakan referensi
+objek Titik yang sama. Kondisi ini disebut aliasing.
+
+Setelah constructor Garis diperbaiki menggunakan defensive
+copy, output berubah menjadi:
+
+```text
+(1.0, 1.0) - (5.0, 5.0)
+```
+
+Perubahan pada variabel t sekarang tidak memengaruhi
+titik awal Garis karena objek Titik sudah disalin.
+
+### Perbandingan Sebelum dan Sesudah Perbaikan
+
+Sebelum defensive copy lebih cocok digunakan ketika
+perubahan titik memang ingin langsung memengaruhi garis,
+misalnya pada aplikasi menggambar yang interaktif.
+
+Setelah defensive copy lebih cocok ketika data garis harus
+tetap konsisten meskipun objek titik dari luar berubah.
+
+### Inheritance dan Composition
+
+Jika Garis menggunakan extends Titik, hubungan antarclass
+menjadi kurang tepat karena Garis bukan merupakan sebuah
+Titik. Garis justru memiliki dua titik, yaitu titik awal
+dan titik akhir.
+
+Karena itu, composition dengan relasi has-a lebih sesuai
+daripada inheritance dengan relasi is-a.
